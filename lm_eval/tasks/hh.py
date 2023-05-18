@@ -10,17 +10,17 @@ TODO
 
 class HH(MultipleChoiceTask):
     VERSION = 0
-    DATASET_PATH = "Dahoas/full-hh-rlhf"
+    DATASET_PATH = "AlekseyKorshuk/lmeh-hh"
     DATASET_NAME = None
 
     def has_training_docs(self):
-        return False
+        return True
 
     def has_validation_docs(self):
         return False
 
     def has_test_docs(self):
-        return True
+        return False
 
     def training_docs(self):
         if self._training_docs is None:
