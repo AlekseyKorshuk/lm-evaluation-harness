@@ -14,7 +14,7 @@ class HH(MultipleChoiceTask):
     DATASET_NAME = None
 
     def has_training_docs(self):
-        return True
+        return False
 
     def has_validation_docs(self):
         return False
