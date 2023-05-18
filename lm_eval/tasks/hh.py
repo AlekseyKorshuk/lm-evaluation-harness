@@ -14,13 +14,13 @@ class HH(MultipleChoiceTask):
     DATASET_NAME = None
 
     def has_training_docs(self):
-        return True
+        return False
 
     def has_validation_docs(self):
         return False
 
     def has_test_docs(self):
-        return False
+        return True
 
     def training_docs(self):
         if self._training_docs is None:
