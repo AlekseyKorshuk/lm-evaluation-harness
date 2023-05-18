@@ -12,6 +12,9 @@ class ChaiBase(MultipleChoiceTask):
     VERSION = 0
     DATASET_PATH = None
     DATASET_NAME = None
+    prompt = "prompt"
+    chosen = "chosen"
+    rejected = "rejected"
 
     def has_training_docs(self):
         return False
@@ -35,8 +38,8 @@ class ChaiBase(MultipleChoiceTask):
 
     def _process_doc(self, doc):
         out_doc = {
-            "query": doc["prompt"],
-            "choices": [doc["chosen"], doc["rejected"]],
+            "query": doc[self.prompt],
+            "choices": [doc[self.chosen], doc[self.rejected]],
             "gold": 0,
         }
         return out_doc
@@ -70,3 +73,6 @@ class ChaiDavinciVsLit(ChaiDavinci):
     VERSION = 0
     DATASET_PATH = "AlekseyKorshuk/lmeh-chai-davinci-vs-lit"
     DATASET_NAME = None
+    prompt = "prompt"
+    chosen = "davinci"
+    rejected = "lit"
