@@ -60,6 +60,7 @@ from . import pawsx
 from . import xnli
 from . import mgsm
 from . import hh
+from . import chai
 
 ########################################
 # Translation tasks
@@ -94,6 +95,10 @@ all_translation_benchmarks = {
 TASK_REGISTRY = {
     # Custom
     "hh": hh.HH,
+    # Chai
+    "chai_davinci": chai.ChaiDavinci,
+    "chai_synthetic": chai.ChaiSynthetic,
+    "chai_davinci_vs_lit": chai.ChaiDavinciVsLit,
     # GLUE
     "cola": glue.CoLA,
     "mnli": glue.MNLI,
