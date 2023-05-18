@@ -26,6 +26,13 @@ class MultiChoice:
             yield choice
 
 
+def dict_mean(dict_list):
+    mean_dict = {}
+    for key in dict_list[0].keys():
+        mean_dict[key] = sum(d[key] for d in dict_list) / len(dict_list)
+    return mean_dict
+
+
 def main():
     limit = 100
     model_type = "hf-causal-experimental"
@@ -99,7 +106,10 @@ def main():
 
         wandb_result = {}
         for key, value in results["results"].items():
+            wandb_result[key] = {}
             wandb_result[key][model] = value
+        wandb_result["mean"] = {}
+        wandb_result["mean"][model] = dict_mean(results["results"].values())
         wandb.log(
             wandb_result
         )
