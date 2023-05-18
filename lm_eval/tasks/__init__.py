@@ -59,6 +59,7 @@ from . import xwinograd
 from . import pawsx
 from . import xnli
 from . import mgsm
+from . import hh
 
 ########################################
 # Translation tasks
@@ -91,6 +92,8 @@ all_translation_benchmarks = {
 
 
 TASK_REGISTRY = {
+    # Custom
+    "hh": hh.HH,
     # GLUE
     "cola": glue.CoLA,
     "mnli": glue.MNLI,
