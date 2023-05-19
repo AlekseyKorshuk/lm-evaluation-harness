@@ -103,7 +103,7 @@ def main():
         if output_path:
             with open(output_path, "w") as f:
                 f.write(dumped)
-
+        model = model.replace("/", "_")
         wandb_result = {}
         for key, value in results["results"].items():
             wandb_result[key] = {}
