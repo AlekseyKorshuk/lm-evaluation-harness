@@ -140,8 +140,9 @@ def main():
             table_data[model_name] = model_data
         df = pd.DataFrame(table_data).transpose()
         df["Model"] = list(df.index)
+        df['mean'] = df.mean(axis=1, numeric_only=True)
         cols = df.columns.tolist()
-        cols = cols[-1:] + cols[:-1]
+        cols = cols[-2:] + cols[:-2]
         df = df[cols]
         table = wandb.Table(dataframe=df)
         wandb.log(
