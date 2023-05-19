@@ -3,6 +3,7 @@ import json
 import logging
 import fnmatch
 import wandb
+import pandas as pd
 
 from lm_eval import tasks, evaluator
 
@@ -76,7 +77,8 @@ def main():
         )
     )
     bar_plots = {task_name: {} for task_name in task_names}
-
+    metrics = ["acc", "acc_norm"]
+    stats = {}
     for model in models:
         model_args = f"pretrained={model},dtype=float16"
         results = evaluator.simple_evaluate(
@@ -92,6 +94,7 @@ def main():
             decontamination_ngrams_path=decontamination_ngrams_path,
             check_integrity=check_integrity,
         )
+        stats[model] = results["results"]
         print(
             f"{model_type} ({model_args}), limit: {limit}, provide_description: {provide_description}, "
             f"num_fewshot: {num_fewshot}, batch_size: {batch_size}"
@@ -100,33 +103,48 @@ def main():
 
         dumped = json.dumps(results, indent=2)
         print(dumped)
-        wandb_result = {}
-
-        if output_path:
-            with open(output_path, "w") as f:
-                f.write(dumped)
-        model = model.replace("/", "_")
-        for key, value in results["results"].items():
-            for score_name, score_value in value.items():
-                if score_name not in bar_plots[key]:
-                    bar_plots[key][score_name] = {}
-                bar_plots[key][score_name][model] = score_value * 100
-                wandb_result[f"{key}:{score_name}/{model}"] = score_value
-        for score_name, score_value in dict_mean(list(results["results"].values())).items():
-            wandb_result[f"mean:{score_name}/{model}"] = score_value * 100
+    #     wandb_result = {}
+    #
+    #     if output_path:
+    #         with open(output_path, "w") as f:
+    #             f.write(dumped)
+    #     model = model.replace("/", "_")
+    #     for key, value in results["results"].items():
+    #         for score_name, score_value in value.items():
+    #             if score_name not in bar_plots[key]:
+    #                 bar_plots[key][score_name] = {}
+    #             bar_plots[key][score_name][model] = score_value * 100.0
+    #             wandb_result[f"{key}:{score_name}/{model}"] = score_value
+    #     for score_name, score_value in dict_mean(list(results["results"].values())).items():
+    #         wandb_result[f"mean:{score_name}/{model}"] = score_value * 100.0
+    #     wandb.log(
+    #         wandb_result
+    #     )
+    # for task, value in bar_plots.items():
+    #     for score_name, values in value.items():
+    #         # import pdb; pdb.set_trace()
+    #         table = wandb.Table(data=list(values.items()), columns=["Model", score_name])
+    #         wandb.log(
+    #             {
+    #                 f"{task}/{score_name}": wandb.plot.bar(table, "Model",
+    #                                                        score_name, title=f"{score_name} bar chart")
+    #             }
+    #         )
+    tables = []
+    for metric in metrics:
+        table_data = {}
+        for model_name, results in stats.items():
+            model_data = {}
+            for task_name, model_metrics in stats[model_name].items():
+                model_data[task_name] = model_metrics[metric]
+            table_data[model_name] = model_data
+        df = pd.DataFrame(table_data).transpose()
+        table = wandb.Table(dataframe=df)
         wandb.log(
-            wandb_result
+            {
+                f"tables/{metric}": table
+            }
         )
-    for task, value in bar_plots.items():
-        for score_name, values in value.items():
-            # import pdb; pdb.set_trace()
-            table = wandb.Table(data=list(values.items()), columns=["Model", score_name])
-            wandb.log(
-                {
-                    f"{task}/{score_name}": wandb.plot.bar(table, "Model",
-                                                           score_name, title=f"{score_name} bar chart")
-                }
-            )
 
 
 if __name__ == "__main__":
