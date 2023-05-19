@@ -109,7 +109,7 @@ def main():
             wandb_result[key] = {}
             wandb_result[key][model] = value
         wandb_result["mean"] = {}
-        wandb_result["mean"][model] = dict_mean(results["results"].values())
+        wandb_result["mean"][model] = dict_mean(list(results["results"].values()))
         wandb.log(
             wandb_result
         )
