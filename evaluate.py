@@ -110,10 +110,10 @@ def main():
             for score_name, score_value in value.items():
                 if score_name not in bar_plots[key]:
                     bar_plots[key][score_name] = {}
-                bar_plots[key][score_name][model] = score_value
+                bar_plots[key][score_name][model] = score_value * 100
                 wandb_result[f"{key}:{score_name}/{model}"] = score_value
         for score_name, score_value in dict_mean(list(results["results"].values())).items():
-            wandb_result[f"mean:{score_name}/{model}"] = score_value
+            wandb_result[f"mean:{score_name}/{model}"] = score_value * 100
         wandb.log(
             wandb_result
         )
