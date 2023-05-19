@@ -106,10 +106,8 @@ def main():
         model = model.replace("/", "_")
         wandb_result = {}
         for key, value in results["results"].items():
-            wandb_result[key] = {}
-            wandb_result[key][model] = value
-        wandb_result["mean"] = {}
-        wandb_result["mean"][model] = dict_mean(list(results["results"].values()))
+            wandb_result[f"{key}/{model}"] = value
+        wandb_result[f"mean/{model}"] = dict_mean(list(results["results"].values()))
         wandb.log(
             wandb_result
         )
