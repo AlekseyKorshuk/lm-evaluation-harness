@@ -11,21 +11,21 @@ logging.getLogger("openai").setLevel(logging.WARNING)
 
 
 def main():
-    limit = 10
+    limit = 1000
     model_type = "hf-causal-experimental"
     models = [
-        # "PygmalionAI/pygmalion-6b",
-        # "ChaiML/ak_edit_v0",
+        "PygmalionAI/pygmalion-6b",
+        "ChaiML/ak_edit_v0",
         "hakurei/lit-6B",
         "EleutherAI/gpt-j-6b",
     ]
     task_names = [
         'truthfulqa_mc',
-        # 'arc_challenge',
-        # 'hellaswag',
-        # 'hh',
-        # 'chai_davinci',
-        # 'chai_synthetic',
+        'arc_challenge',
+        'hellaswag',
+        'hh',
+        'chai_davinci',
+        'chai_synthetic',
         'chai_davinci_vs_lit',
     ]
     description_dict_path = None
