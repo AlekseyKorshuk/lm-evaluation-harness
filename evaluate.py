@@ -75,7 +75,7 @@ def main():
             check_integrity=check_integrity,
         )
     )
-
+    bar_plots = {task_name: {} for task_name in task_names}
     for model in models:
         model_args = f"pretrained={model},dtype=float16"
         results = evaluator.simple_evaluate(
@@ -107,9 +107,21 @@ def main():
         wandb_result = {}
         for key, value in results["results"].items():
             for score_name, score_value in value.items():
+                if score_name not in bar_plots[key]:
+                    bar_plots[key][score_name] = {}
+                bar_plots[key][score_name][model] = score_value
                 wandb_result[f"{key}/{score_name}/{model}"] = score_value
         for score_name, score_value in dict_mean(list(results["results"].values())).items():
             wandb_result[f"mean/{score_name}/{model}"] = score_value
+        for task, value in bar_plots.items():
+            for score_name, values in value.items():
+                table = wandb.Table(data=list(values.values()), columns=["Model", score_name])
+                wandb.log(
+                    {
+                        f"{task}/{score_name}": wandb.plot.bar(table, "Model",
+                                                               score_name, title=f"{score_name} bar chart")
+                    }
+                )
         wandb.log(
             wandb_result
         )
