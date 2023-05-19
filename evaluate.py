@@ -10,39 +10,24 @@ from lm_eval import tasks, evaluator
 logging.getLogger("openai").setLevel(logging.WARNING)
 
 
-class MultiChoice:
-    def __init__(self, choices):
-        self.choices = choices
-
-    # Simple wildcard support (linux filename patterns)
-    def __contains__(self, values):
-        for value in values.split(","):
-            if len(fnmatch.filter(self.choices, value)) == 0:
-                return False
-
-        return True
-
-    def __iter__(self):
-        for choice in self.choices:
-            yield choice
-
-
-def dict_mean(dict_list):
-    mean_dict = {}
-    for key in dict_list[0].keys():
-        mean_dict[key] = sum(d[key] for d in dict_list) / len(dict_list)
-    return mean_dict
-
-
 def main():
-    limit = 100
+    limit = 1
     model_type = "hf-causal-experimental"
     models = [
+        # "PygmalionAI/pygmalion-6b",
+        # "ChaiML/ak_edit_v0",
         "hakurei/lit-6B",
-        "PygmalionAI/pygmalion-6b",
-        "ChaiML/ak_edit_v0",
+        "EleutherAI/gpt-j-6b",
     ]
-    task_names = ['hh', 'chai_davinci', 'chai_synthetic', 'chai_davinci_vs_lit']
+    task_names = [
+        'truthfulqa_mc'
+        # 'arc_challenge',
+        # 'hellaswag',
+        # 'hh',
+        # 'chai_davinci',
+        # 'chai_synthetic',
+        'chai_davinci_vs_lit'
+    ]
     description_dict_path = None
     num_fewshot = 0
     check_integrity = False
@@ -76,7 +61,7 @@ def main():
             check_integrity=check_integrity,
         )
     )
-    metrics = ["acc", "acc_norm"]
+    metrics = ["acc", "acc_norm", "mc2"]
     stats = {}
     for model in models:
         model_args = f"pretrained={model},dtype=float16"
@@ -108,7 +93,7 @@ def main():
         for model_name, results in stats.items():
             model_data = {}
             for task_name, model_metrics in stats[model_name].items():
-                model_data[task_name] = model_metrics[metric]
+                model_data[task_name] = model_metrics.get(metric)
             table_data[model_name] = model_data
         df = pd.DataFrame(table_data).transpose()
         df["Model"] = list(df.index)
