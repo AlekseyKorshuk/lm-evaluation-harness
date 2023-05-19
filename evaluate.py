@@ -76,7 +76,6 @@ def main():
         )
     )
     bar_plots = {task_name: {} for task_name in task_names}
-    wandb_result = {}
 
     for model in models:
         model_args = f"pretrained={model},dtype=float16"
@@ -101,6 +100,7 @@ def main():
 
         dumped = json.dumps(results, indent=2)
         print(dumped)
+        wandb_result = {}
 
         if output_path:
             with open(output_path, "w") as f:
@@ -114,9 +114,9 @@ def main():
                 wandb_result[f"{key}:{score_name}/{model}"] = score_value
         for score_name, score_value in dict_mean(list(results["results"].values())).items():
             wandb_result[f"mean:{score_name}/{model}"] = score_value
-    wandb.log(
-        wandb_result
-    )
+        wandb.log(
+            wandb_result
+        )
     for task, value in bar_plots.items():
         for score_name, values in value.items():
             # import pdb; pdb.set_trace()
