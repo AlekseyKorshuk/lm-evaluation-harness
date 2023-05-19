@@ -115,6 +115,7 @@ def main():
             wandb_result[f"mean/{score_name}/{model}"] = score_value
         for task, value in bar_plots.items():
             for score_name, values in value.items():
+                import pdb; pdb.set_trace()
                 table = wandb.Table(data=list(values.values()), columns=["Model", score_name])
                 wandb.log(
                     {
