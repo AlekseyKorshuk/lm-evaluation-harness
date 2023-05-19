@@ -11,7 +11,7 @@ logging.getLogger("openai").setLevel(logging.WARNING)
 
 
 def main():
-    limit = 1
+    limit = 10
     model_type = "hf-causal-experimental"
     models = [
         # "PygmalionAI/pygmalion-6b",
