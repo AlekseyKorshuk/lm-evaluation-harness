@@ -76,7 +76,6 @@ def main():
             check_integrity=check_integrity,
         )
     )
-    bar_plots = {task_name: {} for task_name in task_names}
     metrics = ["acc", "acc_norm"]
     stats = {}
     for model in models:
@@ -103,34 +102,7 @@ def main():
 
         dumped = json.dumps(results, indent=2)
         print(dumped)
-    #     wandb_result = {}
-    #
-    #     if output_path:
-    #         with open(output_path, "w") as f:
-    #             f.write(dumped)
-    #     model = model.replace("/", "_")
-    #     for key, value in results["results"].items():
-    #         for score_name, score_value in value.items():
-    #             if score_name not in bar_plots[key]:
-    #                 bar_plots[key][score_name] = {}
-    #             bar_plots[key][score_name][model] = score_value * 100.0
-    #             wandb_result[f"{key}:{score_name}/{model}"] = score_value
-    #     for score_name, score_value in dict_mean(list(results["results"].values())).items():
-    #         wandb_result[f"mean:{score_name}/{model}"] = score_value * 100.0
-    #     wandb.log(
-    #         wandb_result
-    #     )
-    # for task, value in bar_plots.items():
-    #     for score_name, values in value.items():
-    #         # import pdb; pdb.set_trace()
-    #         table = wandb.Table(data=list(values.items()), columns=["Model", score_name])
-    #         wandb.log(
-    #             {
-    #                 f"{task}/{score_name}": wandb.plot.bar(table, "Model",
-    #                                                        score_name, title=f"{score_name} bar chart")
-    #             }
-    #         )
-    tables = []
+
     for metric in metrics:
         table_data = {}
         for model_name, results in stats.items():
