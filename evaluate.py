@@ -139,6 +139,10 @@ def main():
                 model_data[task_name] = model_metrics[metric]
             table_data[model_name] = model_data
         df = pd.DataFrame(table_data).transpose()
+        df["Model"] = list(df.index)
+        cols = df.columns.tolist()
+        cols = cols[-1:] + cols[:-1]
+        df = df[cols]
         table = wandb.Table(dataframe=df)
         wandb.log(
             {
