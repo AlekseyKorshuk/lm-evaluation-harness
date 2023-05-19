@@ -20,13 +20,13 @@ def main():
         "EleutherAI/gpt-j-6b",
     ]
     task_names = [
-        'truthfulqa_mc'
+        'truthfulqa_mc',
         # 'arc_challenge',
         # 'hellaswag',
         # 'hh',
         # 'chai_davinci',
         # 'chai_synthetic',
-        'chai_davinci_vs_lit'
+        'chai_davinci_vs_lit',
     ]
     description_dict_path = None
     num_fewshot = 0
