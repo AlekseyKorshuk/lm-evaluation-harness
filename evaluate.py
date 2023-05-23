@@ -11,7 +11,7 @@ logging.getLogger("openai").setLevel(logging.WARNING)
 
 
 def main():
-    limit = 1000
+    limit = None
     model_type = "hf-causal-experimental"
     models = [
         "PygmalionAI/pygmalion-6b",
@@ -24,9 +24,10 @@ def main():
         # 'arc_challenge',
         # 'hellaswag',
         # 'hh',
-        'chai_davinci',
-        'chai_synthetic',
-        'chai_davinci_vs_lit',
+        # 'chai_davinci',
+        # 'chai_synthetic',
+        # 'chai_davinci_vs_lit',
+        'chai_story_cloze',
     ]
     description_dict_path = None
     num_fewshot = 0

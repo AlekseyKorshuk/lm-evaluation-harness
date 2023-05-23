@@ -76,3 +76,9 @@ class ChaiDavinciVsLit(ChaiDavinci):
     prompt = "prompt"
     chosen = "davinci"
     rejected = "lit"
+
+
+class ChaiStoryCloze(ChaiDavinci):
+    VERSION = 0
+    DATASET_PATH = "AlekseyKorshuk/lmeh-story-cloze-2016"
+    DATASET_NAME = None

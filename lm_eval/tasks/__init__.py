@@ -99,6 +99,7 @@ TASK_REGISTRY = {
     "chai_davinci": chai.ChaiDavinci,
     "chai_synthetic": chai.ChaiSynthetic,
     "chai_davinci_vs_lit": chai.ChaiDavinciVsLit,
+    "chai_story_cloze": chai.ChaiStoryCloze,
     # GLUE
     "cola": glue.CoLA,
     "mnli": glue.MNLI,
