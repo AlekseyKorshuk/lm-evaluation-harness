@@ -14,6 +14,7 @@ def main():
     limit = None
     model_type = "hf-causal-experimental"
     models = [
+        "ChaiML/edit_sft_pyg_v2_cp_20541",
         "PygmalionAI/pygmalion-6b",
         "ChaiML/ak_edit_v0",
         "hakurei/lit-6B",
@@ -28,6 +29,9 @@ def main():
         # 'chai_synthetic',
         # 'chai_davinci_vs_lit',
         'chai_story_cloze',
+        'toxigen',
+        'winogrande',
+        'pika',
     ]
     description_dict_path = None
     num_fewshot = 0
