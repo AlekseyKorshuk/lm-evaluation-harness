@@ -31,7 +31,7 @@ def main():
         'chai_story_cloze',
         'toxigen',
         'winogrande',
-        'pika',
+        'piqa',
     ]
     description_dict_path = None
     num_fewshot = 0
